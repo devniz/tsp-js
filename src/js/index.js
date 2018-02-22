@@ -4,6 +4,7 @@
   var lastAtPlace = 0;
   var keepTrack = [];
   var pointHopper = {};
+  var emptyPath= turf.featureCollection([]);
 
   mapboxgl.accessToken = 'pk.eyJ1Ijoibml6YXJic2IiLCJhIjoiY2pkeGtrbnJ1MG4xajJ4bzF2M2tra21meSJ9.PetGbOhE-GcuSh7FlJ98fQ';
 
@@ -75,7 +76,7 @@
 
     map.addSource('route', {
       type: 'geojson',
-      data: nothing
+      data: emptyPath
     });
 
     map.addLayer({
@@ -119,17 +120,28 @@
     dropoffs.features.push(pt);
     pointHopper[pt.properties.key] = pt;
 
+
     // Make a request to the Optimization API
     $.ajax({
       method: 'GET',
       url: assembleQueryURL()
     }).done(function(data) {
+      // Clear the Distance container to populate it with a new value
+      var distanceContainer = document.getElementById('distance');
+      distanceContainer.innerHTML = '';
+
       // Create a GeoJSON feature collection
       var routeGeoJSON = turf.featureCollection([turf.feature(data.trips[0].geometry)]);
 
+      // Populate the distanceContainer with total distance
+      var value = document.createElement('pre');
+
+      value.textContent = 'Total distance: ' + turf.lineDistance(routeGeoJSON).toLocaleString() + 'km';
+      distanceContainer.appendChild(value);
+
       // If there is no route provided, reset
       if (!data.trips[0]) {
-        routeGeoJSON = nothing;
+        routeGeoJSON = emptyPath;
       } else {
         // Update the `route` source by getting the route source
         // and setting the data equal to routeGeoJSON
@@ -205,8 +217,5 @@
     });
     return routeGeoJSON;
   }
-
-  // Create an empty GeoJSON feature collection, which will be used as the data source for the route before users add any new data
-  var nothing = turf.featureCollection([]);
 
 })();
