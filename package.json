@@ -1,0 +1,16 @@
+{
+  "name": "tsp",
+  "version": "1.0.0",
+  "description": "Traveling Salesman Problem solver using mapbox GL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nizar Boussebsi",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "mapbox-gl": "^0.44.1",
+    "turf": "^3.0.14"
+  }
+}
