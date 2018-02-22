@@ -95,6 +95,31 @@
         }
       }
     }, 'waterway-label');
+
+    // Add directional arrows.
+    map.addLayer({
+      id: 'routearrows',
+      type: 'symbol',
+      source: 'route',
+      layout: {
+        'symbol-placement': 'line',
+        'text-field': '▶',
+        'text-size': {
+          base: 1,
+          stops: [[12, 24], [22, 60]]
+        },
+        'symbol-spacing': {
+          base: 1,
+          stops: [[12, 30], [22, 160]]
+        },
+        'text-keep-upright': false
+      },
+      paint: {
+        'text-color': '#3887be',
+        'text-halo-color': 'hsl(55, 11%, 96%)',
+        'text-halo-width': 3
+      }
+    }, 'waterway-label');
   });
 
   var dropoffs = turf.featureCollection([]);
